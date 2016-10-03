@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>FPG HOWARD</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<script>
+		var files = [];
+		var isLocal = (location.href.indexOf('localhost') != -1) || (location.href.indexOf('192.168') != -1);
+		var filesConfig = [{
+			cdn: 'https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js',
+			local: 'js/TweenMax.min.js'
+		},{
+			cdn: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js',
+			local: 'js/jquery.min.js'
+		}, {
+			cdn: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/1.0.0/fetch.min.js',
+			local: 'js/fetch.min.js'
+		}, {
+			local: 'js/ejs.min.js'
+		}, {
+			local: 'js/plugins.js'
+		}, {
+			local: 'js/index.js'
+		}];
+
+		filesConfig.forEach(function(item, i) {
+			if (isLocal) {
+				files.push(item.local);
+			} else {
+				files.push(item.cdn || item.local);
+			}
+		});
+
+		function downloadJSAtOnload() {
+			var i = 0;
+			var edge = files.length - 1;
+
+			function loadJS() {
+				var element = document.createElement('script');
+
+				element.onload = i == edge ? function(){startAd();} : loadJS;
+				element.src = files[i];
+				document.body.appendChild(element);
+				++i;
+			}
+
+			loadJS();
+		}
+
+
+
+		if (window.addEventListener) window.addEventListener('load', downloadJSAtOnload, false);
+		else if (window.attachEvent) window.attachEvent('onload', downloadJSAtOnload);
+		else window.onload = downloadJSAtOnload;
+	</script>
+</head>
+
+<body>
+	<nav class="nav-container">
+		<div class="nav-wrapper">
+			<div class="step1 active">
+				<span>Step.1</span>
+			</div>
+			<div class="step2">
+				<span>Step.2</span>
+			</div>
+			<div class="step3">
+				<span>Step.3</span>
+			</div>
+			<div class="step4">
+				<span>Step.4</span>
+			</div>
+			<div class="step5">
+				<span>Step.5</span>
+			</div>
+		</div>
+	</nav>
+
+	<div class="author animated fadeInRight">
+		<div class="face1">Contact me!</div>
+		<div class="face2">Howard.Zheng</div>
+	</div>
+
+
+	<div class="wrapper prev active">
+		<% include home.ejs %>
+	</div>
+
+	<div class="wrapper temp inactive"></div>
+</body>
+
+</html>
