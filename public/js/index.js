@@ -6,7 +6,7 @@ function startAd() {
 
     selector = HW_CM.selector = '.preload';
     done = HW_CM.done = function(){
-        console.log('preloadImgs finished');
+        console.log('preloadImgs completed');
     };
 
     HW_CM.preloadImgs = function(selector, done) {
@@ -36,17 +36,6 @@ function startAd() {
     HW_CM.preloadImgs(selector, done);
 
 
-
-
-    $.fn.extend({
-        animateCss: function(animationName) {
-            var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-            $(this).addClass('animated ' + animationName).one(animationEnd, function() {
-                $(this).removeClass('hover animated ' + animationName);
-            });
-        }
-    });
-
     var $welcome = $('.welcome').textillate({
         loop: false,
         initialDelay: 100,
@@ -65,7 +54,8 @@ function startAd() {
         '/q1',
         '/q2',
         '/q3',
-        '/result'
+        '/result',
+        '/save'
     ];
 
     function swapPageAnimation() {
@@ -132,12 +122,16 @@ function startAd() {
     function question1(timeout) {
         var timeout_card = [timeout[0].timeout*1000, timeout[1].timeout*1000, timeout[2].timeout*1000];
 
-        $('.card-wrapper').on('mouseenter', '.card', function(){
+        var flag_card_animationEnd = false;
+        $('.card-wrapper').on('animationend', '.card:last', function(){
+            flag_card_animationEnd = true;
+        }).on('mouseenter', '.card', function(){
             var $item = $(this);
             var cardIndex = $item.index();
 
-            if($(this).attr('data-flag') == 'true') return;
-            $(this).addClass('hover');
+            if(!flag_card_animationEnd) return;
+            if($item.attr('data-flag') == 'true') return;
+            $item.addClass('hover');
             setTimeout(function(){
                 $item.attr('data-flag', 'true')
                 $item.removeClass('hover');
@@ -329,7 +323,7 @@ function startAd() {
 
             // send answers
             $.post(
-                '/save', {
+                routHref[4], {
                     answer: answers,
                     qIndex: routIndex
                 }
@@ -342,6 +336,36 @@ function startAd() {
                 console.log('failed');
             });
         });
+    }
+
+    function resultAnimation() {
+        var $resultTitle = $('.result .title').textillate({
+            loop: false,
+            initialDelay: 0,
+            in: {
+                effect: 'fadeInLeft',
+                sync: false,
+                reverse: false,
+                shuffle: true,
+                callback: function () {},
+            },
+            type: 'char'
+        });
+        var $result = $('.result .option').textillate({
+            loop: false,
+            initialDelay: 0,
+            in: {
+                effect: 'fadeInLeft',
+                sync: false,
+                reverse: false,
+                shuffle: true,
+                callback: function () {},
+            },
+            type: 'char'
+        });
+        $('.result').css('display', 'block');
+        $resultTitle.textillate('in');
+        $result.textillate('in');
     }
 
     function renderTemplate(data) {
@@ -361,50 +385,24 @@ function startAd() {
 
                 swapPageAnimation();
 
-                setTimeout(function(){
-                    switch(routIndex) {
-                        case 1:
-                            question1(data.config.detail);
-                            break;
-                        case 2:
-                            question2();
-                            break;
-                        case 3:
-                            question3();
-                            break;
-                        case 4:
-                            var $resultTitle = $('.result .title').textillate({
-                                loop: false,
-                                initialDelay: 0,
-                                in: {
-                                    effect: 'fadeInLeft',
-                                    sync: false,
-                                    reverse: false,
-                                    shuffle: true,
-                                    callback: function () {},
-                                },
-                                type: 'char'
-                            });
-                            var $result = $('.result .option').textillate({
-                                loop: false,
-                                initialDelay: 0,
-                                in: {
-                                    effect: 'fadeInLeft',
-                                    sync: false,
-                                    reverse: false,
-                                    shuffle: true,
-                                    callback: function () {},
-                                },
-                                type: 'char'
-                            });
-                            $('.result').css('display', 'block');
-                            $resultTitle.textillate('in');
-                            $result.textillate('in');
-                            break;
-                        default:
-                            console.log('default');
-                    }
-                }, 1000); // delay to register events
+
+                // register each question's events
+                switch(routIndex) {
+                    case 1:
+                        question1(data.config.detail);
+                        break;
+                    case 2:
+                        question2();
+                        break;
+                    case 3:
+                        question3();
+                        break;
+                    case 4:
+                        resultAnimation();
+                        break;
+                    default:
+                        console.log('default');
+                }
 
                 submitEvent();
             })

@@ -115,7 +115,6 @@ render(app, {
 router
     .get('/', function*(next) {
         yield this.render('home', {
-            config: CONFIG,
             otherAccess: otherAccess[0],
             layout: '__layout'
         });

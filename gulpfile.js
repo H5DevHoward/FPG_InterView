@@ -16,7 +16,7 @@ gulp.task('css', function () {
         autoprefixer,
         cssnext,
         precss,
-        // cssnano
+        cssnano
     ];
     return gulp.src('./public/css/*.scss')
         .pipe(sourcemaps.init())
@@ -44,7 +44,11 @@ gulp.task('img', function () {
         .pipe(reload({stream: true}));
 });
 
-gulp.task('watch', function() {
+gulp.task('compile', function(cb){
+    sequence(['css', 'template', 'ejs', 'js', 'img'], cb);
+});
+
+gulp.task('default', ['compile'], function() {
     browserSync.init({
         // server: {
         //     baseDir: "./public"
@@ -56,8 +60,4 @@ gulp.task('watch', function() {
     gulp.watch('public/css/*.scss', ['css']);
     gulp.watch('public/js/*.js', ['js']);
     gulp.watch('public/img/*', ['img']).on('change', reload);
-});
-
-gulp.task('default', function(cb) {
-    sequence('watch', cb);
 });
