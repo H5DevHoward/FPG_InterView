@@ -1,0 +1,90 @@
+<div class="poster preload" data-bg="" data-source=<%= otherAccess.poster %>></div>
+
+<div class="container">
+    <% if (otherAccess.qIndex != 4){ %>
+        <p class="topic animated bounce">Quession: <%= otherAccess.qIndex %></p>
+        <div class="question-wrapper">
+            <p class="title animated fadeIn"><%= config.question %></p>
+            <% if (otherAccess.qIndex == 1){ %>
+                <div class="card-wrapper">
+                    <% for(var i=0; i<config.detail.length; i++) {%>
+                        <div class="card animated zoomIn" data-flag="false">
+                            <div class="front">
+                                <span><%= config.detail[i].title %>,&nbsp;</span><span><%= config.detail[i].timeout %>s</span>
+                            </div>
+                            <div class="back">
+                                <span><%= config.detail[i].content %></span>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+                <textarea class="yourAnswer animated fadeIn" rows="3" cols="20"></textarea>
+
+            <% } else if (otherAccess.qIndex == 2){ %>
+                <div class="different-wrapper animated fadeIn">
+                    <div class="overlay">
+                        <p>Are you ready ?</p>
+                        <p>click to start</p>
+                    </div>
+                    <div class="product origin preload" data-source=<%= config.detail[0] %>></div>
+                    <div class="product target">
+                        <div class="targetItem preload" data-source=<%= config.detail[1] %>></div>
+                        <% for(var i=0; i<5; i++) {%>
+                            <div class="hotspot"></div>
+                        <% } %>
+
+                        <div class="defeat-wrapper">
+                            <% for(var i=0; i<5; i++) {%>
+                                <div class="defeatCircle"></div>
+                            <% } %>
+                            <span class="defeatCopy">DEFEAT!</span>
+                            <span class="victoryCopy">VICTORY!</span>
+                        </div>
+                    </div>
+                    <div class="lamp-wrapper">
+                        <% for(var i=0; i<5; i++) {%>
+                            <div class="lamp"></div>
+                        <% } %>
+                    </div>
+                </div>
+
+            <% } else if (otherAccess.qIndex == 3){ %>
+                <% for(var i=0; i<config.detail.length; i++) {%>
+                    <div class="circle-wrapper">
+                        <% for(var j=0; j<config.detail[i].circle.length; j++) {%>
+                            <div class="circle animated zoomIn" style="background-color: <%= config.detail[i].circle[j] %>"></div>
+                        <% } %>
+                        <% if (i == config.detail.length-1){ %>
+                            <span class="animated fadeIn">=<input type="text" /></span>
+                        <% } else { %>
+                            <span class="animated fadeIn">=<%= config.detail[i].answer %></span>
+                        <% } %>
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
+
+        <% if (otherAccess.qIndex == 3){ %>
+            <div class="submit animated fadeInUp">
+                <span>SUBMIT</span>
+                <i class="down arrow-icon"></i>
+            </div>
+            <div class="resultOverlay"></div>
+
+        <% } else { %>
+            <div class="submit animated fadeInUp">
+                <span>NEXT</span>
+                <i class="right arrow-icon"></i>
+            </div>
+        <% } %>
+
+
+    <% } else { %>
+        <div class="result">
+            <p class="title">SCORE: <%= scrore[3] %></P>
+            <p class="option">question1:&nbsp;<span><%= scrore[0] %></span></P>
+            <p class="option">question2:&nbsp;<span><%= scrore[1] %></span></P>
+            <p class="option">question3:&nbsp;<span><%= scrore[2] %></span></P>
+        </div>
+    <% } %>
+</div>
