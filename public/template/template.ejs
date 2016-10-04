@@ -29,12 +29,12 @@
                     <div class="product origin preload" data-source=<%= config.detail[0] %>></div>
                     <div class="product target">
                         <div class="targetItem preload" data-source=<%= config.detail[1] %>></div>
-                        <% for(var i=0; i<5; i++) {%>
+                        <% for(var i=0; i<config.key; i++) {%>
                             <div class="hotspot"></div>
                         <% } %>
 
                         <div class="defeat-wrapper">
-                            <% for(var i=0; i<5; i++) {%>
+                            <% for(var i=0; i<config.key; i++) {%>
                                 <div class="defeatCircle"></div>
                             <% } %>
                             <span class="defeatCopy">DEFEAT!</span>
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="lamp-wrapper">
-                        <% for(var i=0; i<5; i++) {%>
+                        <% for(var i=0; i<config.key; i++) {%>
                             <div class="lamp"></div>
                         <% } %>
                     </div>
@@ -82,9 +82,9 @@
     <% } else { %>
         <div class="result">
             <p class="title">SCORE: <%= scrore[3] %></P>
-            <p class="option">question1:&nbsp;<span><%= scrore[0] %></span></P>
-            <p class="option">question2:&nbsp;<span><%= scrore[1] %></span></P>
-            <p class="option">question3:&nbsp;<span><%= scrore[2] %></span></P>
+            <% for(var i=0; i<scrore.length-1; i++) {%>
+                <p class="option">question<%= i+1 %>:&nbsp;<span><%= scrore[i] %></span></P>
+            <% } %>
         </div>
     <% } %>
 </div>
