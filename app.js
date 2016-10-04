@@ -115,6 +115,7 @@ render(app, {
 router
     .get('/', function*(next) {
         yield this.render('home', {
+            pageLength: otherAccess.length,
             otherAccess: otherAccess[0],
             layout: '__layout'
         });
@@ -146,13 +147,9 @@ router
 
         switch(params.qIndex) {
             case '1':
-                scores.set('1', question1Method(qAnswer.get('1')));
-                break;
             case '2':
-                scores.set('2', question2Method(qAnswer.get('2')));
-                break;
             case '3':
-                scores.set('3', question3Method(qAnswer.get('3')));
+                scores.set(params.qIndex, question3Method(qAnswer.get(params.qIndex)));
                 break;
             default:
                 console.log('default');

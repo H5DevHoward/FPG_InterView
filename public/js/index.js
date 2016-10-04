@@ -4,15 +4,15 @@ function startAd() {
             selector: '.preload',
             done: function(){}
         };
-
         var opts = $.extend({}, def, obj);
-
         var images = [];
         var imgLen, currentIndex = 0;
         var $preloadItem = $(opts.selector);
+
         imgLen = $preloadItem.length;
         $preloadItem.each(function(index, item) {
             var $item = $(item);
+
             images[index] = new Image();
             images[index].addEventListener('load', function() {
                 if(typeof($item.data('bg')) != 'undefined') {
@@ -37,7 +37,6 @@ function startAd() {
     var audios = [];
     var countDown20,countDownEnd;
     var flag_q2_end = false;
-
     var $welcome = $('.welcome').textillate({
         loop: false,
         initialDelay: 100,
@@ -59,14 +58,15 @@ function startAd() {
         var flag_isPage4 = (routIndex == 4);
 
         if(flag_isPage4) {
-            TweenMax.to('.submit', 0.1, {
-                autoAlpha: 0
-            });
             var $resultOverlay = $('.resultOverlay');
             var btnX = $resultOverlay.width();
             var btnY = $resultOverlay.height();
             var multipleX = $window.width() / btnX;
             var multipleY = $window.height() / btnY;
+
+            TweenMax.to('.submit', 0.1, {
+                autoAlpha: 0
+            });
 
             TweenMax.to($resultOverlay, 0.5, {
                 autoAlpha: 1,
@@ -122,9 +122,13 @@ function startAd() {
     }
 
     function question1(timeout) {
-        var timeout_card = [timeout[0].timeout*1000, timeout[1].timeout*1000, timeout[2].timeout*1000];
-
+        var timeout_card = [
+            timeout[0].timeout*1000,
+            timeout[1].timeout*1000,
+            timeout[2].timeout*1000
+        ];
         var flag_card_animationEnd = false;
+
         $('.card-wrapper').on('animationend', '.card:last', function(){
             flag_card_animationEnd = true;
         }).on('mouseenter', '.card', function(){
@@ -156,14 +160,18 @@ function startAd() {
         function initAudio() {
             audioNames.forEach(function(item, i){
                 var audio = new Audio();
+
                 audio.src = '../media/'+item+'.mp3';
                 audios.push(audio);
             });
         }
 
+
+
         var lampIndex = 0;
         var lampArray = $.makeArray($('.lamp'));
         var tweenItemLen = lampArray.length;
+
         function findEndAnimation(copy) {
             $('.defeat-wrapper').css('display', 'block');
             TweenMax.staggerFromTo('.lamp-wrapper .lamp' , 0.5, {
@@ -175,20 +183,23 @@ function startAd() {
                 onComplete: function(tween){
                     var $tweenTarget = $(tween.target);
                     var tweenItemIndex = $tweenTarget.index();
+                    var tweenItemColor = $tweenTarget.css('background-color');
+                    var tweenItemZIndex = tweenItemLen-tweenItemIndex;
+
                     if(tweenItemIndex) {
                         TweenMax.fromTo('.defeatCircle:nth-child('+(tweenItemIndex+1)+')', 0.2, {
-                            zIndex: tweenItemLen-tweenItemIndex
+                            zIndex: tweenItemZIndex
                         }, {
                             autoAlpha: 1,
                             scale: 3*tweenItemIndex,
-                            backgroundColor: $tweenTarget.css('background-color'),
+                            backgroundColor: tweenItemColor,
                             ease: Bounce.easeInOut
                         });
                     }else {
                         TweenMax.to('.defeatCircle:nth-child(1)', 0.2, {
                             autoAlpha: 1,
-                            backgroundColor: $tweenTarget.css('background-color'),
-                            zIndex: tweenItemLen-tweenItemIndex
+                            backgroundColor: tweenItemColor,
+                            zIndex: tweenItemZIndex
                         });
                     }
                 },
@@ -206,6 +217,7 @@ function startAd() {
         //register events
         $('.different-wrapper .overlay').on('click', function(){
             var $this = $(this);
+
             TweenMax.staggerFromTo('.lamp-wrapper .lamp' , 0.5, {
                 x: '-230%',
             } , {
@@ -291,22 +303,26 @@ function startAd() {
     function submitEvent() {
         var $submit = $('.active.wrapper .submit');
         var answers = [];
+
         $submit.on('mouseenter mouseleave', function(){
             $submit.toggleClass('hover');
         }).on('click', function(){
             switch(routIndex) {
                 case 1:
                     var q1Answer = $('textarea').val().replace(/ /g, '');
+
                     answers.push(q1Answer);
                     break;
                 case 2:
                     resetAudio();
 
                     var q2Answer = $.makeArray($('.lamp.active')).length;
+
                     answers.push(q2Answer);
                     break;
                 case 3:
                     var q3Answer = $('input').val().replace(/ /g, '');
+
                     answers.push(q3Answer);
                     break;
                 default:
@@ -349,6 +365,7 @@ function startAd() {
             },
             type: 'char'
         });
+
         $('.result').css('display', 'block');
         $resultTitle.textillate('in');
         $result.textillate('in');
