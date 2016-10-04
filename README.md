@@ -1,10 +1,4 @@
-## use 
-
-[https://github.com/koajs/koakoa]: 	"koa"
-
-## and 
-
-[https://github.com/gulpjs/gulp]: 	"gulp"
+## use [koa](https://github.com/koajs/koa) and [gulp](https://github.com/gulpjs/gulp) 
 
 ### node version > 6.2.0
 
