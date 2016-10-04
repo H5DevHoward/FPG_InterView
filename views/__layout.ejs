@@ -62,21 +62,17 @@
 <body>
 	<nav class="nav-container">
 		<div class="nav-wrapper">
-			<div class="step1 active">
-				<span>Step.1</span>
-			</div>
-			<div class="step2">
-				<span>Step.2</span>
-			</div>
-			<div class="step3">
-				<span>Step.3</span>
-			</div>
-			<div class="step4">
-				<span>Step.4</span>
-			</div>
-			<div class="step5">
-				<span>Step.5</span>
-			</div>
+			<% for(var i=0; i<pageLength; i++) {%>
+				<% if (i == 0){ %>
+					<div class="step active">
+						<span>Step.<%= i+1 %></span>
+					</div>
+		        <% } else { %>
+					<div class="step">
+						<span>Step.<%= i+1 %></span>
+					</div>
+		        <% } %>
+            <% } %>
 		</div>
 	</nav>
 
