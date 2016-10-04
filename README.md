@@ -1,3 +1,4 @@
+### node version > 6.2.0
 ### step1.
 
 ##### 	 `$ npm install`
