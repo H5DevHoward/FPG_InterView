@@ -16,13 +16,16 @@ $lamp_active_color: rgba(150, 237, 103, 0.9);
         font-family: $name;
         font-weight: normal;
         font-style: normal;
-        src: url("./font/$name.svg#$name") format("svg"),
-        url("./font/$name.woff") format("woff");
+        src: url("./font/$name.eot");
+        src: url("./font/$name.eot?#iefix") format("embedded-opentype"),
+        url("./font/$name.woff") format("woff"),
+        url("./font/$name.ttf") format("truetype"),
+        url("./font/$name.svg#$name") format("svg");
     }
 }
 
 @mixin font-face Boogaloo;
-@mixin font-face Source+Sans+Pro;
+@mixin font-face SourceSansPro;
 @mixin font-face Catamaran;
 
 
@@ -276,31 +279,6 @@ img {
             animation-delay: 0.7s;
         }
 
-        .choice span {
-            font-size: 30px;
-            letter-spacing: 2px;
-            line-height: 50px;
-            text-shadow: 1px 1px 2px #000;
-            position: relative;
-
-            &:after {
-                content: "";
-                width: 0;
-                height: 5px;
-                background: rgba(136, 82, 127, 1);
-                transition: all .25s ease-in-out 0s;
-                position: absolute;
-                left: 0;
-                top: 30px;
-            }
-
-            &:hover {
-                &:after {
-                    width: 100%;
-                }
-            }
-        }
-
         .card-wrapper {
             width: 100%;
             text-align: center;
@@ -359,7 +337,7 @@ img {
                     z-index: 1;
 
                     span {
-                        font-family: 'Source+Sans+Pro';
+                        font-family: 'SourceSansPro';
                     }
                 }
 
