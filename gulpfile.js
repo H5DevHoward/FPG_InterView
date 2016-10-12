@@ -11,7 +11,7 @@ const sequence = require('gulp-sequence');
 const browserSync = require('browser-sync').create();
 const reload = browserSync.reload;
 
-gulp.task('css', function () {
+gulp.task('css', function() {
     const processors = [
         autoprefixer,
         cssnext,
@@ -24,27 +24,37 @@ gulp.task('css', function () {
         .pipe(sourcemaps.write('.'))
         .pipe(rename('style.css'))
         .pipe(gulp.dest('./public'))
-        .pipe(reload({stream: true}));
+        .pipe(reload({
+            stream: true
+        }));
 });
 
-gulp.task('template', function () {
+gulp.task('template', function() {
     return gulp.src('./public/template/*.ejs')
-        .pipe(reload({stream: true}));
+        .pipe(reload({
+            stream: true
+        }));
 });
-gulp.task('ejs', function () {
+gulp.task('ejs', function() {
     return gulp.src('./views/*.ejs')
-        .pipe(reload({stream: true}));
+        .pipe(reload({
+            stream: true
+        }));
 });
-gulp.task('js', function () {
+gulp.task('js', function() {
     return gulp.src('./public/js/*.js')
-        .pipe(reload({stream: true}));
+        .pipe(reload({
+            stream: true
+        }));
 });
-gulp.task('img', function () {
+gulp.task('img', function() {
     return gulp.src('./public/img/*')
-        .pipe(reload({stream: true}));
+        .pipe(reload({
+            stream: true
+        }));
 });
 
-gulp.task('compile', function(cb){
+gulp.task('compile', function(cb) {
     sequence(['css', 'template', 'ejs', 'js', 'img'], cb);
 });
 
