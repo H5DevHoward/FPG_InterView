@@ -9,92 +9,72 @@ const router = require('koa-router')();
 const koaBody = require('koa-body')();
 const logger = require('koa-logger');
 
-const CONFIG = [
-    {
-        question: '1.Try to remember the numbers (hover to see)',
-        detail: [
-            {
-                title: 'Only one chance',
-                content: '3.14159 26535 89793 23846',
-                timeout: 5
-            },
-            {
-                title: 'Only one chance',
-                content: '3.14159 26535 89793 23846 26433 83279',
-                timeout: 4
-            },
-            {
-                title: 'Only one chance',
-                content: '3.14159 26535 89793 23846 26433 83279 50288',
-                timeout: 3
-            }
-        ],
-        key: '3.14159 26535 89793 23846 26433 83279 50288 41971 69399 37510 58209 74944 59230 78164',
-        percent: 0.4
+const CONFIG = [{
+    question: '1.Try to remember the numbers (hover to see)',
+    detail: [{
+        title: 'Only one chance',
+        content: '3.14159 26535 89793 23846',
+        timeout: 5
     }, {
-        question: '2.Try to find all the difference between the two pictures in 30s',
-        detail: ['img/product2_1.jpg', 'img/product2_2.jpg'],
-        key: 5,
-        percent: 0.3
+        title: 'Only one chance',
+        content: '3.14159 26535 89793 23846 26433 83279',
+        timeout: 4
     }, {
-        question: '3.Try to guess the answer',
-        detail: [
-            {
-                circle: ['#000', '#000', '#000', '#000', '#000'],
-                answer: '1'
-            },
-            {
-                circle: ['#000', '#000', '#000', '#000', '#fff'],
-                answer: '2'
-            },
-            {
-                circle: ['#000', '#000', '#000', '#fff', '#000'],
-                answer: '3'
-            },
-            {
-                circle: ['#000', '#000', '#000', '#fff', '#fff'],
-                answer: '4'
-            },
-            {
-                circle: ['#000', '#000', '#fff', '#000', '#000'],
-                answer: '5'
-            },
-            {
-                circle: ['#000', '#000', '#fff', '#000', '#fff'],
-                answer: '6'
-            },
-            {
-                circle: ['#000', '#fff', '#000', '#000', '#fff'],
-                answer: '?'
-            }
-        ],
-        key: 10,
-        percent: 0.3
-    }
-];
+        title: 'Only one chance',
+        content: '3.14159 26535 89793 23846 26433 83279 50288',
+        timeout: 3
+    }],
+    key: '3.14159 26535 89793 23846 26433 83279 50288 41971 69399 37510 58209 74944 59230 78164',
+    percent: 0.4
+}, {
+    question: '2.Try to find all the difference between the two pictures in 30s',
+    detail: ['img/product2_1.jpg', 'img/product2_2.jpg'],
+    key: 5,
+    percent: 0.3
+}, {
+    question: '3.Try to guess the answer',
+    detail: [{
+        circle: ['#000', '#000', '#000', '#000', '#000'],
+        answer: '1'
+    }, {
+        circle: ['#000', '#000', '#000', '#000', '#fff'],
+        answer: '2'
+    }, {
+        circle: ['#000', '#000', '#000', '#fff', '#000'],
+        answer: '3'
+    }, {
+        circle: ['#000', '#000', '#000', '#fff', '#fff'],
+        answer: '4'
+    }, {
+        circle: ['#000', '#000', '#fff', '#000', '#000'],
+        answer: '5'
+    }, {
+        circle: ['#000', '#000', '#fff', '#000', '#fff'],
+        answer: '6'
+    }, {
+        circle: ['#000', '#fff', '#000', '#000', '#fff'],
+        answer: '?'
+    }],
+    key: 10,
+    percent: 0.3
+}];
 
-const otherAccess = [
-    {
-        qIndex: 0,
-        poster: 'img/p1.jpeg'
-    },
-    {
-        qIndex: 1,
-        poster: 'img/p2.jpeg'
-    },
-    {
-        qIndex: 2,
-        poster: 'img/p3.jpeg'
-    },
-    {
-        qIndex: 3,
-        poster: 'img/p4.jpeg'
-    },
-    {
-        qIndex: 4,
-        poster: 'img/blur.svg'
-    }
-];
+const otherAccess = [{
+    qIndex: 0,
+    poster: 'img/p1.jpeg'
+}, {
+    qIndex: 1,
+    poster: 'img/p2.jpeg'
+}, {
+    qIndex: 2,
+    poster: 'img/p3.jpeg'
+}, {
+    qIndex: 3,
+    poster: 'img/p4.jpeg'
+}, {
+    qIndex: 4,
+    poster: 'img/blur.svg'
+}];
 
 const qAnswer = new Map();
 const scores = new Map();
@@ -141,13 +121,17 @@ router
         };
         yield next;
     })
-    .post('/save', koaBody, function*(next){
+    .post('/save', koaBody, function*(next) {
         let params = this.request.body;
         qAnswer.set(params.qIndex, params.answer);
 
-        switch(params.qIndex) {
+        switch (params.qIndex) {
             case '1':
+                scores.set(params.qIndex, question1Method(qAnswer.get(params.qIndex)));
+                break;
             case '2':
+                scores.set(params.qIndex, question2Method(qAnswer.get(params.qIndex)));
+                break;
             case '3':
                 scores.set(params.qIndex, question3Method(qAnswer.get(params.qIndex)));
                 break;
@@ -164,7 +148,7 @@ router
     .post('/result', koaBody, function*(next) {
         let result = [];
         let sum = 0;
-        for(const [key, value] of scores) {
+        for (const [key, value] of scores) {
             sum += value;
             result.push(value);
         }
@@ -192,12 +176,12 @@ function question1Method(arr) {
     let keyLen = key.length;
     let input = arr[0];
     let inputLen = input.length;
-    if(!inputLen) return 0;
+    if (!inputLen) return 0;
     let len = Math.min(keyLen, input.length);
     let i = 0;
-    for(; i < len; ++i) {
-        if(key[i] != input[i]) {
-          break;
+    for (; i < len; ++i) {
+        if (key[i] != input[i]) {
+            break;
         }
     }
     return Math.round(100 / keyLen * i * CONFIG[0].percent);
