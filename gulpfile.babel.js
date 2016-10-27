@@ -66,7 +66,7 @@ function bundleJs() {
         })
         .pipe(source('index.js'))
         .pipe(buffer())
-        .pipe(gulp.dest('./public/js'))
+        .pipe(gulp.dest('./public'))
         .pipe(reload({
             stream: true
         }));

@@ -34,6 +34,7 @@ window.startAd = () => {
 
     let $window = $(window);
     let $cta = $('.cta');
+    let $contactMe = $('.face2');
     let routIndex = 0;
     let audios = [];
     let countDown20, countDownEnd;
@@ -422,4 +423,7 @@ window.startAd = () => {
     }
 
     $cta.on('click', loadNextPage);
+    $contactMe.on('click', function() {
+        window.open('https://github.com/H5DevHoward/FPG_InterView');
+    });
 };
